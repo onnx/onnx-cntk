@@ -1,0 +1,7 @@
+numpy
+protobuf
+onnx
+pytest-cov
+nbval
+tabulate
+cntk

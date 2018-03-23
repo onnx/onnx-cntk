@@ -1,0 +1,39 @@
+environment:
+
+  matrix:
+
+    - PYTHON_DIR: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.x"
+      PYTHON_ARCH: "64"
+
+init:
+
+  - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
+
+install:
+
+  - set CURRENT=%~dp0
+  - set PYTHONPATH = %CURRENT%
+  - "%PYTHON_DIR%\\python -m pip install --upgrade pip"
+  - "%PYTHON_DIR%\\Scripts\\pip install -r dependencies.txt"
+  - ps: .\\collect_mkl.ps1
+  - set PATH=%CURRENT%mkl\lib;%PATH%
+
+build: off
+
+test_script:
+  
+  - "%PYTHON%\\python -m pytest --cov=onnx_cntk --cov-report=html --cov-report=xml onnx_cntk\tests"
+
+after_test:
+  
+  - "%PYTHON%\\python setup.py bdist_wheel"
+  - if not exist dist mkdir dist
+  - if not exist dist\htmlcov mkdir dist\htmlcov
+  - xcopy htmlcov dist\htmlcov -f 
+  - copy *.xml dist\htmlcov -f
+
+artifacts:
+
+  - path: dist
+    name: onnx_cntk
