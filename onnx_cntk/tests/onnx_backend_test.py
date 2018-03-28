@@ -19,7 +19,6 @@ pytest_plugins = 'onnx.backend.test.report'
 
 backend_test = onnx.backend.test.BackendTest(cntk_backend, __name__)
 
-
 skip_models = [
     'bvlc_alexnet',
     'densenet121',
@@ -34,7 +33,6 @@ skip_models = [
 skip_ops = [
     'test_max',
     'test_min',
-    'BatchNorm',
 ]
 
 skip_tests = skip_models + skip_ops

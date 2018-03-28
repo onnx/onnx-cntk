@@ -10,12 +10,16 @@ from onnx.backend.base import Backend
 from onnx import helper, TensorProto
 from .backend_rep import CNTKBackendRep
 
-
 class CNTKBackend(Backend):
     @staticmethod
     def set_device(device):
         if device == 'CPU':
             C.try_set_default_device(C.device.cpu())
+        elif device == 'GPU' or device == 'CUDA':
+            try:
+                C.try_set_default_device(C.device.gpu(0))
+            except:
+                C.use_default_device()
         else:
             C.use_default_device()
 
@@ -58,7 +62,7 @@ class CNTKBackend(Backend):
 
     @classmethod
     def supports_device(cls, device='CPU'):
-        return device in ['CPU','CUDA']
+        return device in ['CPU', 'GPU', 'CUDA']
 
 run_node = CNTKBackend.run_node
 supports_device = CNTKBackend.supports_device

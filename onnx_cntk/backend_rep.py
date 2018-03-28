@@ -4,7 +4,6 @@
 # license information.
 #--------------------------------------------------------------------------
 
-from collections import namedtuple
 import cntk as C
 import numpy as np
 from onnx.backend.base import BackendRep
